@@ -50,6 +50,28 @@
        SWIGTYPE_p_ldns_struct_buffer, SWIG_POINTER_OWN | 0));
 }
 
+/* TODO error check does not work */
+/* TODO check to not read over buffer */
+%typemap(in) (void  *data, size_t count) {
+   if (!PyInt_Check($input)) {
+       PyErr_SetString(PyExc_ValueError, "Expecting an integer");
+       return NULL;
+   }
+   $2 = PyInt_AsLong($input);
+   if ($2 < 0) {
+       PyErr_SetString(PyExc_ValueError, "Positive integer expected");
+       return NULL;
+   }
+   $1 = (void *) malloc($2);
+}
+
+%typemap(argout) (void *data, size_t count){
+   Py_XDECREF($result);   /* Blow away any previous result */
+   $result = PyString_FromStringAndSize($1,$2);
+   free($1);
+}
+
+
 /*
  * Limit the number of arguments to 2 and deal with variable
  * number of arguments in the Python way.
@@ -355,10 +377,12 @@
             #parameters: ldns_buffer *, void *, size_t,
             #retvals: 
 
-        def read_at(self, at, data, count):
+        def read_at(self, at, count):
             """
                Copies count bytes of data at the given position to the
                given `data`-array.
+               
+               # TODO XXX FIXME
                
                :param at: The position in the buffer to start reading.
                :type at: size_t
@@ -367,8 +391,8 @@
                :param count: The length of the data to copy.
                :type count: size_t
             """
-            _ldns.ldns_buffer_read_at(self,at,data,count)
-            #parameters: ldns_buffer *, size_t, void *, size_t,
+            return _ldns.ldns_buffer_read_at(self,at,count)
+            #parameters: ldns_buffer *, size_t, size_t,
             #retvals: 
 
         def read_u16(self):
