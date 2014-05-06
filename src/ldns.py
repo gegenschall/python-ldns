@@ -840,10 +840,12 @@ class ldns_buffer(_object):
         #parameters: ldns_buffer *, void *, size_t,
         #retvals: 
 
-    def read_at(self, at, data, count):
+    def read_at(self, at, count):
         """
            Copies count bytes of data at the given position to the
            given `data`-array.
+           
+           # TODO XXX FIXME
            
            :param at: The position in the buffer to start reading.
            :type at: size_t
@@ -852,8 +854,8 @@ class ldns_buffer(_object):
            :param count: The length of the data to copy.
            :type count: size_t
         """
-        _ldns.ldns_buffer_read_at(self,at,data,count)
-        #parameters: ldns_buffer *, size_t, void *, size_t,
+        return _ldns.ldns_buffer_read_at(self,at,count)
+        #parameters: ldns_buffer *, size_t, size_t,
         #retvals: 
 
     def read_u16(self):

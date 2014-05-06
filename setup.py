@@ -5,8 +5,8 @@ version = '1.6.17'
 
 ldns_module = Extension('_ldns',
                         sources=['src/ldns.i'],
-                        include_dirs=['/usr/include/ldns'],
-                        swig_opts=['-I/usr/include/'],
+                        include_dirs=['/usr/include/ldns', '/usr/local/include/ldns'],
+                        swig_opts=['-I/usr/include/', '-I/usr/local/include'],
                         libraries=['ldns'])
 
 setup(name='ldns',
