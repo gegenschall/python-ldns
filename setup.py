@@ -1,12 +1,21 @@
-from setuptools import setup, find_packages, Extension
-import sys, os
+from setuptools import setup, Extension
+from distutils.command.build import build
 
 version = '1.6.17'
 
+
+class SWIGBuild(build):
+    sub_commands = [
+        ('build_ext', build.has_ext_modules),
+        ('build_py', build.has_pure_modules),
+        ('build_clib', build.has_c_libraries),
+        ('build_scripts', build.has_scripts),
+    ]
+
 ldns_module = Extension('_ldns',
-                        sources=['src/ldns.i'],
+                        sources=['ldns.i'],
                         include_dirs=['/usr/include/ldns', '/usr/local/include/ldns'],
-                        swig_opts=['-I/usr/include/', '-I/usr/local/include'],
+                        swig_opts=['-I/usr/include/', '-I/usr/local/include', '-O'],
                         libraries=['ldns'])
 
 setup(name='ldns',
@@ -19,17 +28,18 @@ The first major tool to use ldns is Drill, from which part of the library was de
 ldns depends on OpenSSL for its crypto functions. It can be compiled without OpenSSL, but of course you'll lose the ability to perform any cryptographic functions.
 """,
       classifiers=[
-      'Development Status :: 6 - Mature',
-      'License :: OSI Approved :: BSD License',
-      'Programming Language :: Python :: 2',
-      'Programming Language :: Python :: 3',
-      'Topic :: Internet :: Name Service (DNS)'
+            'Development Status :: 6 - Mature',
+            'License :: OSI Approved :: BSD License',
+            'Programming Language :: Python :: 2',
+            'Programming Language :: Python :: 3',
+            'Topic :: Internet :: Name Service (DNS)'
       ],
       keywords='ldns network dns dnssec nameserver',
       author='Zdenek Vasicek, Karel Slany',
       author_email='vasicek AT fit.vutbr.cz, slany AT fit.vutbr.cz',
       url='http://www.nlnetlabs.nl/projects/ldns/',
       license='BSD',
+      cmdclass={'build': SWIGBuild},
       py_modules=['ldns'],
       ext_modules=[ldns_module],
       zip_safe=False,

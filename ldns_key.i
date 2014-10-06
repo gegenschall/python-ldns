@@ -34,14 +34,14 @@
  ldns_key *$1_key;
  $1 = &$1_key;
 }
-          
+
 /* result generation */
 %typemap(argout,noblock=1) (ldns_key **)
 {
   $result = SWIG_Python_AppendOutput($result, SWIG_NewPointerObj(SWIG_as_voidptr($1_key), SWIGTYPE_p_ldns_struct_key, SWIG_POINTER_OWN |  0 ));
 }
 
-%exception ldns_key_set_pubkey_owner(ldns_key *k, ldns_rdf *r)  %{ $action Py_INCREF(obj1); %}
+/* %exception ldns_key_set_pubkey_owner(ldns_key *k, ldns_rdf *r)  %{ $action Py_INCREF(obj0); %} */
 
 %nodefaultctor ldns_struct_key; //no default constructor & destructor
 %nodefaultdtor ldns_struct_key;
@@ -92,13 +92,13 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 "
 
 %extend ldns_struct_key {
- 
+
  %pythoncode %{
         def __init__(self):
             self.this = _ldns.ldns_key_new()
             if not self.this:
                 raise Exception("Can't create instance of this class")
-       
+
         __swig_destroy__ = _ldns._ldns_key_free
 
         def __str__(self):
@@ -108,7 +108,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def key_to_rr(self):
             """converts a ldns_key to a public key rr
-               
+
                :returns: (ldns_rr \*) ldns_rr representation of the key
             """
             return _ldns.ldns_key2rr(self)
@@ -117,18 +117,18 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def print_to_file(self, file):
             """print a private key to the file ouput
-               
+
                :param file: output file pointer
             """
             _ldns.ldns_key_print(file, self)
             #parameters: FILE *, const ldns_key *,
-            #retvals: 
+            #retvals:
 
         #LDNS_KEY_CONSTRUCTORS_#
         @staticmethod
         def new_frm_fp(file, raiseException=True):
-            """Creates a new priv key based on the contents of the file pointed by fp. 
-               
+            """Creates a new priv key based on the contents of the file pointed by fp.
+
                :param file: a file object
                :param raiseException: if True, an exception occurs in case a key instance can't be created
                :returns: key instance or None. If the object can't be created and raiseException is True, an exception occurs.
@@ -141,11 +141,11 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         @staticmethod
         def new_frm_fp_l(file, raiseException=True):
-            """Creates a new private key based on the contents of the file pointed by fp. 
-               
+            """Creates a new private key based on the contents of the file pointed by fp.
+
                :param file: a file object
                :param raiseException: if True, an exception occurs in case a key instance can't be created
-               :returns: 
+               :returns:
                   * key - key instance or None. If an instance can't be created and raiseException is True, an exception occurs.
 
                   * line - the line number (for debugging)
@@ -158,8 +158,8 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         @staticmethod
         def new_frm_algorithm(algorithm, size, raiseException=True):
-            """Creates a new key based on the algorithm. 
-               
+            """Creates a new key based on the algorithm.
+
                :param algorithm: the algorithm to use
                :param size: the number of bytes for the keysize
                :param raiseException: if True, an exception occurs in case a key instance can't be created
@@ -176,7 +176,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
         #LDNS_KEY_METHODS_#
         def algorithm(self):
             """return the signing alg of the key
-               
+
                :returns: (ldns_signing_algorithm) the algorithm
             """
             return _ldns.ldns_key_algorithm(self)
@@ -185,8 +185,8 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def dsa_key(self):
             """returns the (openssl) DSA struct contained in the key
-               
-               :returns: (DSA \*) 
+
+               :returns: (DSA \*)
             """
             return _ldns.ldns_key_dsa_key(self)
             #parameters: const ldns_key *,
@@ -194,7 +194,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def evp_key(self):
             """returns the (openssl) EVP struct contained in the key
-               
+
                :returns: (EVP_PKEY \*) the RSA * structure in the key
             """
             return _ldns.ldns_key_evp_key(self)
@@ -203,7 +203,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def expiration(self):
             """return the key's expiration date
-               
+
                :returns: (uint32_t) the experiration date
             """
             return _ldns.ldns_key_expiration(self)
@@ -212,7 +212,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def flags(self):
             """return the flag of the key
-               
+
                :returns: (uint16_t) the flag
             """
             return _ldns.ldns_key_flags(self)
@@ -221,7 +221,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def hmac_key(self):
             """return the hmac key data
-               
+
                :returns: (unsigned char \*) the hmac key data
             """
             return _ldns.ldns_key_hmac_key(self)
@@ -230,7 +230,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def hmac_size(self):
             """return the hmac key size
-               
+
                :returns: (size_t) the hmac key size
             """
             return _ldns.ldns_key_hmac_size(self)
@@ -239,7 +239,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def inception(self):
             """return the key's inception date
-               
+
                :returns: (uint32_t) the inception date
             """
             return _ldns.ldns_key_inception(self)
@@ -248,7 +248,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def keytag(self):
             """return the keytag
-               
+
                :returns: (uint16_t) the keytag
             """
             return _ldns.ldns_key_keytag(self)
@@ -257,7 +257,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def origttl(self):
             """return the original ttl of the key
-               
+
                :returns: (uint32_t) the original ttl
             """
             return _ldns.ldns_key_origttl(self)
@@ -266,7 +266,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def pubkey_owner(self):
             """return the public key's owner
-               
+
                :returns: (ldns_rdf \*) the owner
             """
             return _ldns.ldns_key_pubkey_owner(self)
@@ -275,7 +275,7 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def rsa_key(self):
             """returns the (openssl) RSA struct contained in the key
-               
+
                :returns: (RSA \*) the RSA * structure in the key
             """
             return _ldns.ldns_key_rsa_key(self)
@@ -284,137 +284,137 @@ This class can contains all types of keys that are used in DNSSEC. Mostly used t
 
         def set_algorithm(self,l):
             """Set the key's algorithm.
-               
+
                :param l:
                    the algorithm
             """
             _ldns.ldns_key_set_algorithm(self,l)
             #parameters: ldns_key *,ldns_signing_algorithm,
-            #retvals: 
+            #retvals:
 
         def set_dsa_key(self,d):
             """Set the key's dsa data.
-               
+
                :param d:
                    the dsa data
             """
             _ldns.ldns_key_set_dsa_key(self,d)
             #parameters: ldns_key *,DSA *,
-            #retvals: 
+            #retvals:
 
         def set_evp_key(self,e):
             """Set the key's evp key.
-               
+
                :param e:
                    the evp key
             """
             _ldns.ldns_key_set_evp_key(self,e)
             #parameters: ldns_key *,EVP_PKEY *,
-            #retvals: 
+            #retvals:
 
         def set_expiration(self,e):
             """Set the key's expiration date (seconds after epoch).
-               
+
                :param e:
                    the expiration
             """
             _ldns.ldns_key_set_expiration(self,e)
             #parameters: ldns_key *,uint32_t,
-            #retvals: 
+            #retvals:
 
         def set_flags(self,flags):
             """Set the key's flags.
-               
+
                :param flags:
                    the flags
             """
             _ldns.ldns_key_set_flags(self,flags)
             #parameters: ldns_key *,uint16_t,
-            #retvals: 
+            #retvals:
 
         def set_hmac_key(self,hmac):
             """Set the key's hmac data.
-               
+
                :param hmac:
                    the raw key data
             """
             _ldns.ldns_key_set_hmac_key(self,hmac)
             #parameters: ldns_key *,unsigned char *,
-            #retvals: 
+            #retvals:
 
         def set_hmac_size(self,hmac_size):
             """Set the key's hmac size.
-               
+
                :param hmac_size:
                    the size of the hmac data
             """
             _ldns.ldns_key_set_hmac_size(self,hmac_size)
             #parameters: ldns_key *,size_t,
-            #retvals: 
+            #retvals:
 
         def set_inception(self,i):
             """Set the key's inception date (seconds after epoch).
-               
+
                :param i:
                    the inception
             """
             _ldns.ldns_key_set_inception(self,i)
             #parameters: ldns_key *,uint32_t,
-            #retvals: 
+            #retvals:
 
         def set_keytag(self,tag):
             """Set the key's key tag.
-               
+
                :param tag:
                    the keytag
             """
             _ldns.ldns_key_set_keytag(self,tag)
             #parameters: ldns_key *,uint16_t,
-            #retvals: 
+            #retvals:
 
         def set_origttl(self,t):
             """Set the key's original ttl.
-               
+
                :param t:
                    the ttl
             """
             _ldns.ldns_key_set_origttl(self,t)
             #parameters: ldns_key *,uint32_t,
-            #retvals: 
+            #retvals:
 
         def set_pubkey_owner(self,r):
             """Set the key's pubkey owner.
-               
+
                :param r:
                    the owner
             """
             _ldns.ldns_key_set_pubkey_owner(self,r)
             #parameters: ldns_key *,ldns_rdf *,
-            #retvals: 
+            #retvals:
 
         def set_rsa_key(self,r):
             """Set the key's rsa data.
-               
+
                :param r:
                    the rsa data
             """
             _ldns.ldns_key_set_rsa_key(self,r)
             #parameters: ldns_key *,RSA *,
-            #retvals: 
+            #retvals:
 
         def set_use(self,v):
             """set the use flag
-               
+
                :param v:
                    the boolean value to set the _use field to
             """
             _ldns.ldns_key_set_use(self,v)
             #parameters: ldns_key *,bool,
-            #retvals: 
+            #retvals:
 
         def use(self):
             """return the use flag
-               
+
                :returns: (bool) the boolean value of the _use field
             """
             return _ldns.ldns_key_use(self)
@@ -447,13 +447,13 @@ void _ldns_key_list_free (ldns_key_list* k) {
 #endif
 
 %extend ldns_struct_key_list {
- 
+
  %pythoncode %{
         def __init__(self):
             self.this = _ldns.ldns_key_list_new()
             if not self.this:
                 raise Exception("Can't create class")
-       
+
         __swig_destroy__ = _ldns._ldns_key_list_free
 
         def keys(self):
@@ -472,7 +472,7 @@ void _ldns_key_list_free (ldns_key_list* k) {
            #LDNS_KEY_LIST_METHODS_#
         def key(self,nr):
             """returns a pointer to the key in the list at the given position
-               
+
                :param nr:
                    the position in the list
                :returns: (ldns_key \*) the key
@@ -483,7 +483,7 @@ void _ldns_key_list_free (ldns_key_list* k) {
 
         def key_count(self):
             """returns the number of keys in the key list
-               
+
                :returns: (size_t) the numbers of keys in the list
             """
             return _ldns.ldns_key_list_key_count(self)
@@ -492,7 +492,7 @@ void _ldns_key_list_free (ldns_key_list* k) {
 
         def pop_key(self):
             """pops the last rr from a keylist
-               
+
                :returns: (ldns_key \*) NULL if nothing to pop. Otherwise the popped RR
             """
             return _ldns.ldns_key_list_pop_key(self)
@@ -501,7 +501,7 @@ void _ldns_key_list_free (ldns_key_list* k) {
 
         def push_key(self,key):
             """pushes a key to a keylist
-               
+
                :param key:
                    the key to push
                :returns: (bool) false on error, otherwise true
@@ -512,23 +512,23 @@ void _ldns_key_list_free (ldns_key_list* k) {
 
         def set_key_count(self,count):
             """Set the keylist's key count to count.
-               
+
                :param count:
                    the cuont
             """
             _ldns.ldns_key_list_set_key_count(self,count)
             #parameters: ldns_key_list *,size_t,
-            #retvals: 
+            #retvals:
 
         def set_use(self,v):
             """Set the 'use' flag for all keys in the list.
-               
+
                :param v:
                    The value to set the use flags to
             """
             _ldns.ldns_key_list_set_use(self,v)
             #parameters: ldns_key_list *,bool,
-            #retvals: 
+            #retvals:
 
            #_LDNS_KEY_LIST_METHODS#
  %}

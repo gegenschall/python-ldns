@@ -52,5 +52,5 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
-src/ldns_wrap.c
-src/ldns.py
+ldns_wrap.c
+ldns.py

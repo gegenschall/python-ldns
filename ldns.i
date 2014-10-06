@@ -4,10 +4,10 @@
  * Copyright (c) 2009, Zdenek Vasicek (vasicek AT fit.vutbr.cz)
  *                     Karel Slany    (slany AT fit.vutbr.cz)
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  *     * Redistributions of source code must retain the above copyright notice,
  *       this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above copyright
@@ -16,7 +16,7 @@
  *     * Neither the name of the organization nor the names of its
  *       contributors may be used to endorse or promote products derived from this
  *       software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -74,7 +74,7 @@
 #ifdef PY3
 %include "file_py3.i" // python 3 FILE *
 #else
-%include "file.i"     // FILE * 
+%include "file.i"     // FILE *
 #endif
 %include "typemaps.i"
 
@@ -116,9 +116,9 @@ struct timeval* ldns_make_timeval(uint32_t sec, uint32_t usec)
         res->tv_usec = usec;
         return res;
 }
-uint32_t ldns_read_timeval_sec(struct timeval* t) { 
+uint32_t ldns_read_timeval_sec(struct timeval* t) {
         return (uint32_t)t->tv_sec; }
-uint32_t ldns_read_timeval_usec(struct timeval* t) { 
+uint32_t ldns_read_timeval_usec(struct timeval* t) {
         return (uint32_t)t->tv_usec; }
 %}
 
@@ -190,7 +190,7 @@ typedef struct ldns_dnssec_zone { };
 %include "ldns_dname.i"
 
 %inline %{
- PyObject* ldns_rr_new_frm_str_(const char *str, uint32_t default_ttl, ldns_rdf* origin, ldns_rdf* prev) 
+ PyObject* ldns_rr_new_frm_str_(const char *str, uint32_t default_ttl, ldns_rdf* origin, ldns_rdf* prev)
  //returns tuple (status, ldns_rr, prev)
  {
    PyObject* tuple;
@@ -213,17 +213,17 @@ typedef struct ldns_dnssec_zone { };
    ldns_status st = ldns_rr_new_frm_str(pp_rr, str, default_ttl, origin, pp_prev);
 
    tuple = PyTuple_New(3);
-   PyTuple_SetItem(tuple, 0, SWIG_From_int(st)); 
-   PyTuple_SetItem(tuple, 1, (st == LDNS_STATUS_OK) ? 
-                             SWIG_NewPointerObj(SWIG_as_voidptr(p_rr), SWIGTYPE_p_ldns_struct_rr, SWIG_POINTER_OWN |  0 ) : 
+   PyTuple_SetItem(tuple, 0, SWIG_From_int(st));
+   PyTuple_SetItem(tuple, 1, (st == LDNS_STATUS_OK) ?
+                             SWIG_NewPointerObj(SWIG_as_voidptr(p_rr), SWIGTYPE_p_ldns_struct_rr, SWIG_POINTER_OWN |  0 ) :
 		   (Py_INCREF(Py_None), Py_None));
-   PyTuple_SetItem(tuple, 2, (p_prev != prev) ? 
+   PyTuple_SetItem(tuple, 2, (p_prev != prev) ?
                              SWIG_NewPointerObj(SWIG_as_voidptr(p_prev), SWIGTYPE_p_ldns_struct_rdf, SWIG_POINTER_OWN |  0 ) :
 		   (Py_INCREF(Py_None), Py_None));
    return tuple;
  }
 
- PyObject* ldns_rr_new_frm_fp_(FILE *fp, uint32_t default_ttl,  ldns_rdf* origin,  ldns_rdf* prev) 
+ PyObject* ldns_rr_new_frm_fp_(FILE *fp, uint32_t default_ttl,  ldns_rdf* origin,  ldns_rdf* prev)
  //returns tuple (status, ldns_rr, ttl, origin, prev)
  {
    uint32_t defttl = default_ttl;
@@ -254,10 +254,10 @@ typedef struct ldns_dnssec_zone { };
    PyObject* tuple;
    tuple = PyTuple_New(5);
    int idx = 0;
-   PyTuple_SetItem(tuple, idx, SWIG_From_int(st)); 
+   PyTuple_SetItem(tuple, idx, SWIG_From_int(st));
    idx++;
-   PyTuple_SetItem(tuple, idx, (st == LDNS_STATUS_OK) ? 
-                             SWIG_NewPointerObj(SWIG_as_voidptr(p_rr), SWIGTYPE_p_ldns_struct_rr, SWIG_POINTER_OWN |  0 ) : 
+   PyTuple_SetItem(tuple, idx, (st == LDNS_STATUS_OK) ?
+                             SWIG_NewPointerObj(SWIG_as_voidptr(p_rr), SWIGTYPE_p_ldns_struct_rr, SWIG_POINTER_OWN |  0 ) :
 		   (Py_INCREF(Py_None), Py_None));
    idx++;
    PyTuple_SetItem(tuple, idx, SWIG_From_int(defttl));
@@ -268,7 +268,7 @@ typedef struct ldns_dnssec_zone { };
    return tuple;
  }
 
- PyObject* ldns_rr_new_frm_fp_l_(FILE *fp, uint32_t default_ttl,  ldns_rdf* origin,  ldns_rdf* prev) 
+ PyObject* ldns_rr_new_frm_fp_l_(FILE *fp, uint32_t default_ttl,  ldns_rdf* origin,  ldns_rdf* prev)
  //returns tuple (status, ldns_rr, line, ttl, origin, prev)
  {
    int linenr = 0;
@@ -302,10 +302,10 @@ typedef struct ldns_dnssec_zone { };
    PyObject* tuple;
    tuple = PyTuple_New(6);
    int idx = 0;
-   PyTuple_SetItem(tuple, idx, SWIG_From_int(st)); 
+   PyTuple_SetItem(tuple, idx, SWIG_From_int(st));
    idx++;
-   PyTuple_SetItem(tuple, idx, (st == LDNS_STATUS_OK) ? 
-                             SWIG_NewPointerObj(SWIG_as_voidptr(p_rr), SWIGTYPE_p_ldns_struct_rr, SWIG_POINTER_OWN |  0 ) : 
+   PyTuple_SetItem(tuple, idx, (st == LDNS_STATUS_OK) ?
+                             SWIG_NewPointerObj(SWIG_as_voidptr(p_rr), SWIGTYPE_p_ldns_struct_rr, SWIG_POINTER_OWN |  0 ) :
 		   (Py_INCREF(Py_None), Py_None));
    idx++;
    PyTuple_SetItem(tuple, idx, SWIG_From_int(linenr));
@@ -319,7 +319,7 @@ typedef struct ldns_dnssec_zone { };
  }
 
 
-PyObject* ldns_rr_new_question_frm_str_(const char *str, ldns_rdf* origin, ldns_rdf* prev) 
+PyObject* ldns_rr_new_question_frm_str_(const char *str, ldns_rdf* origin, ldns_rdf* prev)
  //returns tuple (status, ldns_rr, prev)
  {
    PyObject* tuple;
@@ -342,11 +342,11 @@ PyObject* ldns_rr_new_question_frm_str_(const char *str, ldns_rdf* origin, ldns_
    ldns_status st = ldns_rr_new_question_frm_str(pp_rr, str, origin, pp_prev);
 
    tuple = PyTuple_New(3);
-   PyTuple_SetItem(tuple, 0, SWIG_From_int(st)); 
-   PyTuple_SetItem(tuple, 1, (st == LDNS_STATUS_OK) ? 
-                             SWIG_NewPointerObj(SWIG_as_voidptr(p_rr), SWIGTYPE_p_ldns_struct_rr, SWIG_POINTER_OWN |  0 ) : 
+   PyTuple_SetItem(tuple, 0, SWIG_From_int(st));
+   PyTuple_SetItem(tuple, 1, (st == LDNS_STATUS_OK) ?
+                             SWIG_NewPointerObj(SWIG_as_voidptr(p_rr), SWIGTYPE_p_ldns_struct_rr, SWIG_POINTER_OWN |  0 ) :
 		   (Py_INCREF(Py_None), Py_None));
-   PyTuple_SetItem(tuple, 2, (p_prev != prev) ? 
+   PyTuple_SetItem(tuple, 2, (p_prev != prev) ?
                              SWIG_NewPointerObj(SWIG_as_voidptr(p_prev), SWIGTYPE_p_ldns_struct_rdf, SWIG_POINTER_OWN |  0 ) :
 		   (Py_INCREF(Py_None), Py_None));
    return tuple;
@@ -366,9 +366,9 @@ PyObject* ldns_fetch_valid_domain_keys_(const ldns_resolver * res, const ldns_rd
 
 
    tuple = PyTuple_New(2);
-   PyTuple_SetItem(tuple, 0, SWIG_From_int(st)); 
-   PyTuple_SetItem(tuple, 1, (st == LDNS_STATUS_OK) ? 
-                             SWIG_NewPointerObj(SWIG_as_voidptr(rrl), SWIGTYPE_p_ldns_struct_rr_list, SWIG_POINTER_OWN |  0 ) : 
+   PyTuple_SetItem(tuple, 0, SWIG_From_int(st));
+   PyTuple_SetItem(tuple, 1, (st == LDNS_STATUS_OK) ?
+                             SWIG_NewPointerObj(SWIG_as_voidptr(rrl), SWIGTYPE_p_ldns_struct_rr_list, SWIG_POINTER_OWN |  0 ) :
 		   (Py_INCREF(Py_None), Py_None));
    return tuple;
  }
@@ -382,7 +382,7 @@ PyObject* ldns_wire2pkt_(const char *str, int len)
   size_t arg3 = (size_t) len;
   ldns_status result;
   PyObject* tuple;
-  
+
   result = (ldns_status)ldns_wire2pkt(&arg1,arg2,arg3);
   tuple = PyTuple_New(2);
   PyTuple_SetItem(tuple, 0, SWIG_From_int(result));
