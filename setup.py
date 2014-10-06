@@ -1,16 +1,20 @@
 from setuptools import setup, Extension
 from distutils.command.build import build
+from distutils.command.install import install
 
 version = '1.6.17'
 
 
 class SWIGBuild(build):
-    sub_commands = [
-        ('build_ext', build.has_ext_modules),
-        ('build_py', build.has_pure_modules),
-        ('build_clib', build.has_c_libraries),
-        ('build_scripts', build.has_scripts),
-    ]
+    def run(self):
+        self.run_command('build_ext')
+        build.run(self)
+
+
+class SWIGInstall(install):
+    def run(self):
+        self.run_command('build_ext')
+        install.run(self)
 
 ldns_module = Extension('_ldns',
                         sources=['ldns.i'],
@@ -39,7 +43,7 @@ ldns depends on OpenSSL for its crypto functions. It can be compiled without Ope
       author_email='vasicek AT fit.vutbr.cz, slany AT fit.vutbr.cz',
       url='http://www.nlnetlabs.nl/projects/ldns/',
       license='BSD',
-      cmdclass={'build': SWIGBuild},
+      cmdclass={'build': SWIGBuild, 'install': SWIGInstall},
       py_modules=['ldns'],
       ext_modules=[ldns_module],
       zip_safe=False,
